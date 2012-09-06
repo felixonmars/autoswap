@@ -1,0 +1,9 @@
+[Unit]
+Description=Automount Local SWAP
+After=local-fs.target
+
+[Service]
+ExecStart=/bin/bash -c "/sbin/fdisk -l|/usr/bin/grep swap|/usr/bin/cut -d ' ' -f 1|/usr/bin/xargs /sbin/swapon"
+
+[Install]
+WantedBy=multi-user.target
