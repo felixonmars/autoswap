@@ -3,7 +3,9 @@ Description=Automount Local SWAP
 After=local-fs.target
 
 [Service]
-ExecStart=/bin/sh -c 'for DEV in $(/sbin/blkid -o device); do export $(/sbin/blkid -o export $DEV); [[ "$TYPE" == "swap" ]] && /sbin/swapon UUID=$UUID; done'
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/bash -c 'for DEV in $(/sbin/blkid -o device); do export $(/sbin/blkid -o export $DEV); [[ "$TYPE" == "swap" ]] && /sbin/swapon UUID=$UUID; done'
 
 [Install]
 WantedBy=multi-user.target
