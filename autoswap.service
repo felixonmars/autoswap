@@ -3,7 +3,7 @@ Description=Automount Local SWAP
 After=local-fs.target
 
 [Service]
-ExecStart=/bin/bash -c "/sbin/fdisk -l|/usr/bin/grep swap|/usr/bin/cut -d ' ' -f 1|/usr/bin/xargs /sbin/swapon"
+ExecStart=/bin/sh -c 'for DEV in $(/sbin/blkid -o device); do export $(/sbin/blkid -o export $DEV); [[ "$TYPE" == "swap" ]] && /sbin/swapon UUID=$UUID; done'
 
 [Install]
 WantedBy=multi-user.target
