@@ -5,7 +5,8 @@ After=local-fs.target
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=/bin/bash -c 'for DEV in $(/sbin/blkid -o device); do export $(/sbin/blkid -o export $DEV); [[ "$TYPE" == "swap" ]] && /sbin/swapon UUID=$UUID; done'
+ExecStart=/bin/bash -c 'for DEV in $(/sbin/blkid -o device); do export $(/sbin/blkid -o export $DEV); [[ "$TYPE" == "swap" ]] && (/sbin/swapon UUID=$UUID || true); done'
+ExecStop=/sbin/swapoff -a
 
 [Install]
 WantedBy=multi-user.target
